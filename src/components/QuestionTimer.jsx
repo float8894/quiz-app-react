@@ -5,13 +5,15 @@ export default function QuestionTimer({ timeout, onTimeout, mode }) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      onTimeout();
+      if (typeof onTimeout === 'function') {
+        onTimeout();
+      }
     }, timeout);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [onTimeout]);
+  }, [timeout, onTimeout]);
 
   useEffect(() => {
     setRemainingTime(timeout);
@@ -22,7 +24,7 @@ export default function QuestionTimer({ timeout, onTimeout, mode }) {
     return () => {
       clearInterval(interval);
     };
-  }, [timeout, onTimeout]);
+  }, [timeout]);
 
   return (
     <progress
